@@ -25,19 +25,17 @@ public class VentanaListaPedidos extends JFrame {
         gestionDatos.addColumn("Estado");
 
         tablaPedidos = new JTable(gestionDatos);
-        tablaPedidos.setDefaultEditor(Object.class, null);
-
-        JScrollPane scroll = new JScrollPane((tablaPedidos));
-        add(scroll, BorderLayout.CENTER);
+        add(new JScrollPane(tablaPedidos));
     }
 
-    public void actualizarTabla(List<Pedido> listaPedidos) {
+    public void actualizarTabla(List<Pedido> lista) {
         gestionDatos.setRowCount(0);
 
-        for (Pedido p : listaPedidos) {
+        for (Pedido p : lista) {
             gestionDatos.addRow(new Object[]{
                     p.getId(),
                     p.getDireccion(),
+                    p.getTipo(),
                     p.getEstado()
             });
         }

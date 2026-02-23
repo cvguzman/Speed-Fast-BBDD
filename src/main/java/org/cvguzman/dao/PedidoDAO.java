@@ -6,6 +6,10 @@ import org.cvguzman.modelo.Pedido;
 import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PedidoDAO {
 
@@ -31,5 +35,29 @@ public class PedidoDAO {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error al cargar pedidos desde la Base Datos");
         }
+    }
+
+    public List<Pedido> obtenerPedidos() {
+
+        List<Pedido> lista = new ArrayList<>();
+        String sql = "SELECT * FROM pedido";
+
+        try(Connection con = ConexionBD.obtenerConexion();
+            PreparedStatement stmt = con.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery()) {
+
+            while(rs.next()) {
+                Pedido p = new Pedido(
+                        rs.getInt("ID"),
+                        rs.getString("direccion"),
+                        rs.getString("tipo"),
+                        rs.getString("estado")
+                );
+                lista.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
     }
 }
