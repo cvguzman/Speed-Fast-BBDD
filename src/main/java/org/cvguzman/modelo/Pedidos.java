@@ -1,23 +1,13 @@
 package org.cvguzman.modelo;
 
-public class Pedido {
+public class Pedidos {
 
     private int id;
     private String direccion;
-    private String tipo;
-    private EstadoPedido estado;
+    private Tipo tipo;
+    private Estado estado;
 
-    public Pedido(int id, String direccion, String tipo, String estado) {
-
-    }
-
-    public Pedido(String direccion, String tipo) {
-        this.direccion = direccion;
-        this.tipo = tipo;
-        this.estado = EstadoPedido.PENDIENTE;
-    }
-
-    public Pedido(int id, String direccion, String tipo, EstadoPedido estado) {
+    public Pedidos(int id, String direccion, Tipo tipo, Estado estado) {
         this.id = id;
         this.direccion = direccion;
         this.tipo = tipo;
@@ -32,11 +22,11 @@ public class Pedido {
         return direccion;
     }
 
-    public String getTipo() {
+    public Tipo getTipo() {
         return tipo;
     }
 
-    public EstadoPedido getEstado() {
+    public Estado getEstado() {
         return estado;
     }
 
@@ -48,11 +38,11 @@ public class Pedido {
         this.direccion = direccion;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
 
-    public void setEstado(EstadoPedido estado) {
+    public void setEstado(Estado estado) {
         this.estado = estado;
     }
 
@@ -64,9 +54,6 @@ public class Pedido {
                 ", tipo' " + getTipo() + " \'" +
                 ", estadoPedido=" + estado +
                 '}';
-    }
-
-    public void addRow(Object[] objects) {
     }
 }
 

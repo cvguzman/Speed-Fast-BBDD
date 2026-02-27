@@ -1,6 +1,6 @@
 package org.cvguzman.vista;
 
-import org.cvguzman.modelo.Pedido;
+import org.cvguzman.modelo.Pedidos;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -11,27 +11,35 @@ public class VentanaListaPedidos extends JFrame {
 
     private JTable tablaPedidos;
     private DefaultTableModel gestionDatos;
+    private JButton btnAsignar;
 
     public VentanaListaPedidos() {
         setTitle("Lista de Pedidos");
-        setSize(500, 300);
+        setSize(600, 400);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
         gestionDatos = new DefaultTableModel();
         gestionDatos.addColumn("ID");
         gestionDatos.addColumn("Dirección");
+        gestionDatos.addColumn("Tipo");
         gestionDatos.addColumn("Estado");
 
         tablaPedidos = new JTable(gestionDatos);
-        add(new JScrollPane(tablaPedidos));
+        add(new JScrollPane(tablaPedidos), BorderLayout.CENTER);
+
+        JPanel panelInferior = new JPanel();
+        btnAsignar = new JButton("Asignar Repartidor");
+        panelInferior.add(btnAsignar);
+
+        add(panelInferior, BorderLayout.SOUTH);
     }
 
-    public void actualizarTabla(List<Pedido> lista) {
+    public void actualizarTabla(List<Pedidos> lista) {
         gestionDatos.setRowCount(0);
 
-        for (Pedido p : lista) {
+        for (Pedidos p : lista) {
             gestionDatos.addRow(new Object[]{
                     p.getId(),
                     p.getDireccion(),
@@ -39,6 +47,14 @@ public class VentanaListaPedidos extends JFrame {
                     p.getEstado()
             });
         }
+    }
+
+    public JButton getBtnAsignar() {
+        return btnAsignar;
+    }
+
+    public JTable getTablaPedidos() {
+        return tablaPedidos;
     }
 }
 

@@ -10,9 +10,12 @@ public class VentanaPrincipal extends  JFrame {
 
     public VentanaPrincipal() {
         setTitle("Speed Fast");
-        setSize(400, 250);
+        setSize(400, 300);
         setLocationRelativeTo(null);
-        setLayout(new GridLayout(4,1));
+        setLayout(new GridLayout(4,1,10,10));
+        ((JComponent) getContentPane()).setBorder(
+                BorderFactory.createEmptyBorder(20, 20, 20, 20)
+        );
 
         add(new JLabel("Bienvenido a SpeedFast", SwingConstants.CENTER));
         btnRegistrar = new JButton("Registrar Pedidos");

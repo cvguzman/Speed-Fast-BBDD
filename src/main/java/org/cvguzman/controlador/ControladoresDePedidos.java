@@ -1,12 +1,17 @@
 package org.cvguzman.controlador;
 
-import org.cvguzman.dao.PedidoDAO;
-import org.cvguzman.dao.RepartidorDAO;
-import org.cvguzman.modelo.Pedido;
+import org.cvguzman.dao.PedidosDAO;
+import org.cvguzman.dao.RepartidoresDAO;
+import org.cvguzman.modelo.Estado;
+import org.cvguzman.modelo.Pedidos;
+import org.cvguzman.modelo.Tipo;
 import org.cvguzman.vista.VentanaListaPedidos;
 import org.cvguzman.vista.VentanaPrincipal;
 import org.cvguzman.vista.VentanaRegistroPedidos;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.sql.Connection;
 import java.util.List;
 
 public class ControladoresDePedidos {
@@ -14,17 +19,16 @@ public class ControladoresDePedidos {
     private VentanaPrincipal vistaPrincipal;
     private VentanaRegistroPedidos vistaRegistro;
     private VentanaListaPedidos vistaLista;
-    private PedidoDAO pedidoDAO;
-    private RepartidorDAO repartidorDAO;
+    private PedidosDAO pedidoDAO;
+    private RepartidoresDAO repartidorDAO;
 
-    public ControladoresDePedidos() {
+    public ControladoresDePedidos(Connection connection) {
 
         vistaPrincipal = new VentanaPrincipal();
         vistaRegistro = new VentanaRegistroPedidos();
         vistaLista = new VentanaListaPedidos();
-        pedidoDAO = new PedidoDAO();
-        repartidorDAO = new RepartidorDAO();
-
+        pedidoDAO = new PedidosDAO(connection);
+        repartidorDAO = new RepartidoresDAO(connection);
 
         configurarEventos();
     }
@@ -39,21 +43,79 @@ public class ControladoresDePedidos {
                 vistaRegistro.setVisible(true));
 
         vistaPrincipal.getBtnListar().addActionListener(e -> {
-            List<Pedido> lista = pedidoDAO.obtenerPedidos();
+            List<Pedidos> lista = pedidoDAO.readAll();
             vistaLista.actualizarTabla(lista);
             vistaLista.setVisible(true);
         });
 
-        vistaRegistro.getBtnGuardar().addActionListener(e -> {
-            String direccion = vistaRegistro.getDireccion();
-            String tipo = vistaRegistro.getTipo();
+        vistaLista.getBtnAsignar().addActionListener(e -> {
 
-            Pedido nuevoPedido = new Pedido(direccion, tipo);
-            pedidoDAO.guardar(nuevoPedido);
+            int fila = vistaLista.getTablaPedidos().getSelectedRow();
 
-            vistaRegistro.mostrarMensaje("Pedido registrado correctamente");
+            if (fila == -1) {
+                JOptionPane.showMessageDialog(null, "Seleccione un pedido");
+                return;
+            }
 
-            vistaRegistro.dispose();
+            int idPedido = (int) vistaLista.getTablaPedidos().getValueAt(fila, 0);
+
+            var listaRepartidores = repartidorDAO.readAll();
+
+            if(listaRepartidores.isEmpty()) {
+                JOptionPane.showMessageDialog(null,"No hay repartidores disponibles");
+                return;
+            }
+
+            JComboBox combo = new JComboBox(
+                    listaRepartidores.stream()
+                            .map(r -> r.getNombre())
+                            .toArray()
+            );
+
+            int opcion = JOptionPane.showConfirmDialog(
+                    null,
+                    combo,
+                    "Seleccione Repartidor",
+                    JOptionPane.OK_CANCEL_OPTION
+            );
+
+            if (opcion == JOptionPane.OK_OPTION) {
+
+                int index = combo.getSelectedIndex();
+                int idRepartidor = listaRepartidores.get(index).getId();
+
+                pedidoDAO.asignarRepartidor(idPedido, idRepartidor);
+
+
+                JOptionPane.showMessageDialog(null, "Repartidor asignado correctamente");
+            }
         });
+
+        vistaRegistro.getBtnGuardar().addActionListener(this::actionPerformed);
+    }
+
+
+    private void actionPerformed(ActionEvent e) {
+
+        String direccion = vistaRegistro.getDireccion();
+        String tipoStr = vistaRegistro.getTipo();
+        String estadoStr = vistaRegistro.getEstado();
+
+        Tipo tipo = Tipo.valueOf(tipoStr.toUpperCase());
+        Estado estado = Estado.valueOf(estadoStr.toUpperCase());
+
+
+        Pedidos nuevoPedido = new Pedidos(
+                0,
+                direccion,
+                tipo,
+                estado
+        );
+
+        pedidoDAO.create(nuevoPedido);
+
+        vistaRegistro.mostrarMensaje("Pedido registrado correctamente");
+
+        vistaRegistro.dispose();
     }
 }
