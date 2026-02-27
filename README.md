@@ -21,7 +21,7 @@ La aplicación permite:
 - Asignar repartidores a pedidos
 - Persistir la información en MySQL mediante JDBC
 
-La interfaz g´rafica fue desarrolada con Swing, utilizando componentes como JFrame,
+La interfaz gráfica fue desarrolada con Swing, utilizando componentes como JFrame,
 JTable, DefaultTableModel, JButton, JOptionPane para la interacción con el usuario.
 
 En la capa de datos se utiliza
