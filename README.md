@@ -72,13 +72,13 @@ SpeedFast/
  |                  |      └── Repartidores.java
  |                  |      └──Tipo.java
  |                  ├── vista/
- |                  |      └──VentanaListaPedidos.java
- |                  |      └──VentanaPrincipal.java
+ |                  |      └── VentanaListaPedidos.java
+ |                  |      └── VentanaPrincipal.java
  |                  └────- └── VentanaRegistroPedidos.java          
  ├── target/
  ├── .gitignore
  ├── pom.xml
- └──  README.md
+ └── README.md
 
 ````
 
