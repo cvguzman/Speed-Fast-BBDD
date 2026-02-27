@@ -88,20 +88,20 @@ SpeedFast/
 1. Clona el repositorio desde GitHub:
 
 ```bash
-git clone https://github.com/cvguzman/speed-fast.git
+git clone https://github.com/cvguzman/Speed-Fast-BBDD.git
 ```
 
 2. Abre el proyecto en IntelliJ IDEA.
 
-3. Ejecuta el archivo `Main.java` desde el paquete `gestores` para resultados en consola.
+3. Ejecuta el archivo `Main.java` desde el paquete `main` 
 
 4. Sigue las instrucciones en consola o en la interfaz gráfica (si corresponde).
 
 
 ---
 
-**Repositorio GitHub:** https://github.com/cvguzman/speed-fast
-**Fecha de entrega:** 09/02/2026
+**Repositorio GitHub:** https://github.com/cvguzman/Speed-Fast-BBDD
+**Fecha de entrega:** 01/03/2026
 
 ---
 
